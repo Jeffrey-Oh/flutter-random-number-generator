@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:random_number_generator/constant/color/Color.dart';
+import 'package:random_number_generator/screen/home/HomeScreen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -9,7 +10,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  double maxNumber = 10000;
+  double maxNumber = 1000;
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +37,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
                 Slider(
                   value: maxNumber,
-                  min: 10000,
-                  max: 1000000,
+                  min: 1000,
+                  max: 100000,
                   onChanged: (double val) {
                     setState(() {
                       maxNumber = val;
@@ -48,7 +49,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(primary: RED_COLOR),
-                        onPressed: () {},
+                        onPressed: () {
+                          // 화면 뒤로 이동하는 네비게이션
+                          Navigator.of(context).pop(maxNumber.toInt());
+                        },
                         child: Text('저장!')))
               ],
             ),
