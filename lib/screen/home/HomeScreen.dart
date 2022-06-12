@@ -10,6 +10,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Widget lottos = _Lotto();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     '로또 번호 생성기',
                     style: TextStyle(
                         color: Colors.white,
@@ -44,7 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: const [_Lotto()],
+                  children: [
+                    lottos
+                  ],
                 ),
               ),
               // 버튼의 사이즈를 양 끝으로 늘리는 방법
@@ -55,8 +59,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(primary: RED_COLOR),
-                  onPressed: () {},
-                  child: Text('생성하기'),
+                  onPressed: () {
+                    setState(() {
+                      lottos = _Lotto();
+                    });
+                  },
+                  child: const Text('생성하기'),
                 ),
               ),
             ],
