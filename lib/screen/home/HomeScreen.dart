@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:random_number_generator/constant/color/Color.dart';
+import 'package:random_number_generator/util/Utils.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -25,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '랜덤숫자 생성기',
+                    '로또 번호 생성기',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,
@@ -42,8 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Text('123'), Text('456'), Text('789')],
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [_Lotto()],
                 ),
               ),
               // 버튼의 사이즈를 양 끝으로 늘리는 방법
@@ -62,6 +63,42 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _Lotto extends StatelessWidget {
+  const _Lotto({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    List<int> numbers = [];
+    int i = 6;
+
+    while (i > 0) {
+      int getNum = Utils().generateRandom(1, 45);
+      if (!numbers.contains(getNum)) {
+        numbers.add(getNum);
+        --i;
+      }
+    }
+
+    numbers.sort();
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: numbers.map((x) =>
+        Row(
+          children: x
+            .toString()
+            .split('')
+            .map((y) => Image.asset(
+            'assets/img/$y.png',
+            height: 25,
+            width: 25,
+          )).toList(),
+        )
+      ).toList()
     );
   }
 }
