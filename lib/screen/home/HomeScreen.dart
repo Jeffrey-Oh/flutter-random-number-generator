@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:random_number_generator/constant/color/Color.dart';
+import 'package:random_number_generator/screen/settings/SettingsScreen.dart';
 import 'package:random_number_generator/util/Utils.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,7 +28,9 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _Header(),
-              _Body(randomNumbers: randomNumbers,),
+              _Body(
+                randomNumbers: randomNumbers,
+              ),
               // 버튼의 사이즈를 양 끝으로 늘리는 방법
               // 1. SizedBox 로 감싼 후 width 를 double.infinity 속성을 부여한다
               // 2. 전체를 Row로 감싼 후 안의 내용을 Expanded로 감싼다
@@ -45,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final Set<int> newNumbers = {};
 
-    while(newNumbers.length != 3) {
+    while (newNumbers.length != 3) {
       final number = rand.nextInt(1000);
 
       newNumbers.add(number);
@@ -68,12 +71,17 @@ class _Header extends StatelessWidget {
         const Text(
           '랜덤숫자 생성기',
           style: TextStyle(
-              color: Colors.white,
-              fontSize: 30,
-              fontWeight: FontWeight.w700),
+              color: Colors.white, fontSize: 30, fontWeight: FontWeight.w700),
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            // 화면 이동하는 네비게이션
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) {
+                return SettingsScreen();
+              },
+            ));
+          },
           icon: const Icon(
             Icons.settings,
             color: RED_COLOR,
@@ -98,20 +106,19 @@ class _Body extends StatelessWidget {
             .asMap()
             .entries
             .map((e) => Padding(
-          padding:
-          EdgeInsets.only(bottom: e.key == 2 ? 0 : 16),
-          child: Row(
-            children: e.value
-                .toString()
-                .split('')
-                .map((e) => Image.asset(
-              'assets/img/$e.png',
-              height: 70,
-              width: 50,
-            ))
-                .toList(),
-          ),
-        ))
+                  padding: EdgeInsets.only(bottom: e.key == 2 ? 0 : 16),
+                  child: Row(
+                    children: e.value
+                        .toString()
+                        .split('')
+                        .map((e) => Image.asset(
+                              'assets/img/$e.png',
+                              height: 70,
+                              width: 50,
+                            ))
+                        .toList(),
+                  ),
+                ))
             .toList(),
       ),
     );
@@ -135,7 +142,6 @@ class _Footer extends StatelessWidget {
     );
   }
 }
-
 
 class _Lotto extends StatelessWidget {
   const _Lotto({Key? key}) : super(key: key);
