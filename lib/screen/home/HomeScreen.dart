@@ -10,8 +10,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Widget lottos = _Lotto();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,10 +43,25 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    lottos
-                  ],
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [123, 456, 789]
+                      .asMap()
+                      .entries
+                      .map((e) => Padding(
+                        padding: EdgeInsets.only(bottom: e.key == 2? 0 : 16),
+                        child: Row(
+                              children: e.value
+                                  .toString()
+                                  .split('')
+                                  .map((e) => Image.asset(
+                                        'assets/img/$e.png',
+                                        height: 70,
+                                        width: 50,
+                                      ))
+                                  .toList(),
+                            ),
+                      ))
+                      .toList(),
                 ),
               ),
               // 버튼의 사이즈를 양 끝으로 늘리는 방법
@@ -59,11 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(primary: RED_COLOR),
-                  onPressed: () {
-                    setState(() {
-                      lottos = _Lotto();
-                    });
-                  },
+                  onPressed: () {},
                   child: const Text('생성하기'),
                 ),
               ),
@@ -94,19 +103,19 @@ class _Lotto extends StatelessWidget {
     numbers.sort();
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: numbers.map((x) =>
-        Row(
-          children: x
-            .toString()
-            .split('')
-            .map((y) => Image.asset(
-            'assets/img/$y.png',
-            height: 25,
-            width: 25,
-          )).toList(),
-        )
-      ).toList()
-    );
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: numbers
+            .map((x) => Row(
+                  children: x
+                      .toString()
+                      .split('')
+                      .map((y) => Image.asset(
+                            'assets/img/$y.png',
+                            height: 25,
+                            width: 25,
+                          ))
+                      .toList(),
+                ))
+            .toList());
   }
 }
