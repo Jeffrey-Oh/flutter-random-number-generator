@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:random_number_generator/constant/color/Color.dart';
 import 'package:random_number_generator/util/Utils.dart';
@@ -10,6 +12,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<int> randomNumbers = [123, 456, 789];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    '로또 번호 생성기',
+                    '랜덤숫자 생성기',
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,
@@ -44,12 +48,13 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [123, 456, 789]
+                  children: randomNumbers
                       .asMap()
                       .entries
                       .map((e) => Padding(
-                        padding: EdgeInsets.only(bottom: e.key == 2? 0 : 16),
-                        child: Row(
+                            padding:
+                                EdgeInsets.only(bottom: e.key == 2 ? 0 : 16),
+                            child: Row(
                               children: e.value
                                   .toString()
                                   .split('')
@@ -60,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ))
                                   .toList(),
                             ),
-                      ))
+                          ))
                       .toList(),
                 ),
               ),
@@ -72,7 +77,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(primary: RED_COLOR),
-                  onPressed: () {},
+                  onPressed: () {
+                    final rand = Random();
+
+                    final Set<int> newNumbers = {};
+
+                    while(newNumbers.length != 3) {
+                      final number = rand.nextInt(1000);
+
+                      newNumbers.add(number);
+                    }
+
+                    setState(() {
+                      randomNumbers = newNumbers.toList();
+                    });
+                  },
                   child: const Text('생성하기'),
                 ),
               ),
@@ -89,18 +108,14 @@ class _Lotto extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<int> numbers = [];
-    int i = 6;
+    Set<int> numbers = {};
 
-    while (i > 0) {
-      int getNum = Utils().generateRandom(1, 45);
-      if (!numbers.contains(getNum)) {
-        numbers.add(getNum);
-        --i;
-      }
+    while (numbers.length != 6) {
+      numbers.add(Utils().generateRandom(1, 45));
     }
 
-    numbers.sort();
+    List<int> newNumbers = numbers.toList();
+    newNumbers.sort();
 
     return Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
