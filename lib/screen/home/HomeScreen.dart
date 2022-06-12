@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:random_number_generator/component/NumberRow.dart';
 import 'package:random_number_generator/constant/color/Color.dart';
 import 'package:random_number_generator/screen/settings/SettingsScreen.dart';
 import 'package:random_number_generator/util/Utils.dart';
@@ -29,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _Header(
-                onPressed: onSettingsPop,
+                onPressed: onSettingsPush,
               ),
               _Body(
                 randomNumbers: randomNumbers,
@@ -62,11 +63,13 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void onSettingsPop() async {
+  void onSettingsPush() async {
     // 화면 이동하는 네비게이션
-    final result = await Navigator.of(context).push<int>(MaterialPageRoute(
+    final int? result = await Navigator.of(context).push<int>(MaterialPageRoute(
       builder: (BuildContext context) {
-        return SettingsScreen();
+        return SettingsScreen(
+          maxNumber: maxNumber,
+        );
       },
     ));
 
@@ -120,17 +123,7 @@ class _Body extends StatelessWidget {
             .entries
             .map((e) => Padding(
                   padding: EdgeInsets.only(bottom: e.key == 2 ? 0 : 16),
-                  child: Row(
-                    children: e.value
-                        .toString()
-                        .split('')
-                        .map((e) => Image.asset(
-                              'assets/img/$e.png',
-                              height: 70,
-                              width: 50,
-                            ))
-                        .toList(),
-                  ),
+                  child: NumberRow(number: e.value.toInt(),)
                 ))
             .toList(),
       ),
